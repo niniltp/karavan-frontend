@@ -5,16 +5,16 @@ export const Game = {
                     typeof game?.config?.num_rounds === 'number' &&
                     typeof game?.config?.round_duration === 'number' &&
                     typeof game?.current_round === 'number' &&
-                    Array.isArray(game?.rounds) // TODO : change when API updated
+                    // Array.isArray(game?.rounds) // TODO : change when API updated
                     typeof game?.current_turn === 'number' // TODO : change when API updated
                     // Array.isArray(game?.turns); // TODO : change when API updated
 
     return isValid;
   },
   mapFromAPI: (APIgame) => {
-    if(!Game.validator(APIgame)) {
-      throw new Error('Invalid data for mapping Game object'); // TODO : refactor with error code etc
-    }
+    // if(!Game.validator(APIgame)) {
+    //   throw new Error('Invalid data for mapping Game object'); // TODO : refactor with error code etc
+    // }
   
     const game = Game.create({
         type: APIgame.status?.type,
@@ -26,7 +26,8 @@ export const Game = {
       },
       APIgame.current_round,
       APIgame.current_turn,
-      Game.mapTurnFromAPI(APIgame.rounds)); // TODO : rename to 'turns' when API updated
+      // Game.mapTurnFromAPI(APIgame.rounds)); // TODO : rename to 'turns' when API updated
+      APIgame.rounds); // TODO : rename to 'turns' when API updated
     return game;
   },
   mapTurnFromAPI: (APITurns) => {

@@ -7,7 +7,7 @@ export const Room = {
     const isValid = typeof room?.room_id === 'string' &&
                     Array.isArray(room?.players) &&
                     (typeof room?.owner === 'string' || room?.owner == null) &&
-                    Game.validator(room?.game) &&
+                    // Game.validator(room?.game) &&
                     typeof room?.room_state === 'string'  // TODO : check if in RoomStatus enum
     return isValid;
   },

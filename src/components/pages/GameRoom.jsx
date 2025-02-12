@@ -74,7 +74,7 @@ function GameRoom() {
   const [error, setError] = useState(null); // TODO : change ?
   const [roomStatus, setRoomStatus] = useState(RoomStatus.WAITING); // TODO : temp
 
-  const { loadedPlayer, isLoadingPlayer, errorPlayer } = useFetchPlayer(roomId);
+  // const { loadedPlayer, isLoadingPlayer, errorPlayer } = useFetchPlayer(roomId);
 
   useEffect(() => {
     if(state?.room) {    // TODO : Check si nécessaire
@@ -91,9 +91,9 @@ function GameRoom() {
         .finally(() => setIsLoading(false));
     }
 
-    if(loadedPlayer != null) {
-      setCurrentPlayer(loadedPlayer);
-    }
+    // if(loadedPlayer != null) {
+    //   setCurrentPlayer(loadedPlayer);
+    // }
   }, [roomStatus]);
 
   useEffect(() => {
@@ -103,7 +103,7 @@ function GameRoom() {
     }
   }, [error]);
 
-  if(isLoading || isLoadingPlayer) {
+  if(isLoading) {
     return <LoadingOverlay active={true} />
   }
 
