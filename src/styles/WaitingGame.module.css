@@ -1,0 +1,44 @@
+.wrapper {
+  max-width: 50rem;
+  /* min-width: 10rem; */
+  padding: 1rem 2rem;
+  text-align: center;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.currentPlayer {
+  padding: 0.3rem 0.5rem;
+  border-radius: var(--mantine-radius-md);
+  width: 100%;
+
+  @mixin light {
+    background-color: var(--mantine-primary-color-filled);
+    color: white;
+  }
+
+  @mixin dark {
+    background-color: var(--mantine-primary-color-light);
+    color: white;
+  }
+}
+
+.otherPlayer {
+  padding: 0.3rem 0.5rem;
+  border-radius: var(--mantine-radius-md);
+  width: 100%;
+}
+
+.listPlayers {
+  @media (min-width: 768px) {
+    max-width: 70%;
+  }
+  margin-left: auto;
+  margin-right: auto;
+  
+  @mixin light {
+    color: var(--mantine-color-dark-4);
+  }
+}

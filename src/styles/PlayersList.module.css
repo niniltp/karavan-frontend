@@ -1,0 +1,71 @@
+.wrapper {
+  max-width: 18rem;
+  min-width: 18rem;
+  /* @media(max-width: 1080px) {
+    width: 100%;
+    margin: 0 auto;
+  } */
+
+  /* min-width: 10rem; */
+  padding: 0.7rem 1rem 1rem;
+  text-align: center;
+  /* background: alpha(
+    light-dark(
+      var(--mantine-primary-color-filled), 
+      var(--mantine-color-customDarkBlue-7))
+  , 1); */
+  @mixin dark {
+    background-color: var(--mantine-color-customDarkBlue-7);
+  }
+
+  @mixin light {
+    background-image: linear-gradient(
+      -60deg,
+      var(--mantine-color-blue-4) 0%,
+      var(--mantine-color-blue-7) 100%
+    );
+  }
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+/* .currentPlayer {
+  @mixin light {
+    background-color: var(--mantine-primary-color-filled);
+    color: white;
+  }
+
+  @mixin dark {
+    background-color: var(--mantine-primary-color-light);
+    color: white;
+  }
+} */
+
+.currentPlayer .namePlayer {
+    color: light-dark(var(--mantine-primary-color-5), var(--mantine-primary-color-filled));
+    font-weight: bold !important;
+}
+
+.playerRow {
+  padding: 0.3rem 0.5rem;
+  border-radius: var(--mantine-radius-md);
+  width: 100%;
+}
+
+.hasFoundSong {
+  background-color: light-dark(alpha(var(--mantine-color-green-9), 0.7), var(--mantine-primary-color-light));
+}
+
+.listPlayers {
+  /* @media (min-width: 768px) {
+    max-width: 70%;
+  } */
+  /* margin-left: auto;
+  margin-right: auto; */
+  
+  @mixin light {
+    color: var(--mantine-color-white);
+  }
+}

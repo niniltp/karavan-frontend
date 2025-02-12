@@ -1,0 +1,7 @@
+.wrapper {
+  background-color:rgb(112, 68, 68);
+}
+
+.hidden {
+  visibility: hidden;
+}

@@ -1,0 +1,16 @@
+.wrapper {
+  /* min-width: 70%; */
+  min-width: 18rem;
+  padding: 0.7rem 1rem 1rem;
+  text-align: center;
+  background: alpha(
+    light-dark(
+      var(--mantine-color-customDarkBlue-1), 
+      var(--mantine-color-customDarkBlue-7))
+  , 1);
+  min-height: 400px;
+}
+
+.hidden {
+  visibility: hidden;
+}

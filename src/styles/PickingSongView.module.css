@@ -1,0 +1,11 @@
+/*TODO : temp, to check*/
+
+.wrapper {
+
+}
+
+.groupWrapper {
+  @media (min-width: 1024px) {
+    flex-wrap: nowrap;
+  }
+}

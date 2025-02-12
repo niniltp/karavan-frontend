@@ -1,0 +1,31 @@
+.wrapper {
+  /* max-width: 10rem; */
+  /* min-width: 30rem; */
+}
+
+.actionIcon {
+  min-width: 10rem;
+  height: auto;
+
+  @media (min-width: 1024px) {
+    width: auto;
+    max-width: 80%;
+  }  
+}
+
+.actionIconImg {
+  animation: 7000ms linear 0s infinite running none spin;
+}
+
+.actionIconImg:hover {
+  animation-play-state: paused;
+}
+
+@keyframes spin {
+  from {
+      transform:rotate(0deg) scale(1);
+  }
+  to {
+      transform:rotate(360deg) scale(1);
+  }
+}

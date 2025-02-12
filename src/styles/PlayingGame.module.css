@@ -1,0 +1,12 @@
+/*TODO : temp, to check*/
+
+.wrapper {
+  /* padding: 1rem 2rem; */
+  /* text-align: center; */
+}
+
+.groupWrapper {
+  @media (min-width: 1024px) {
+    flex-wrap: nowrap;
+  }
+}

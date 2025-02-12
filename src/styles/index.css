@@ -1,0 +1,25 @@
+
+@import '@mantine/core/styles.css';
+
+:root {
+  /* max-width: 1280px; */
+  /* margin: 0 auto; */
+}
+
+body {
+  @mixin light {
+    color: var(--mantine-color-dark-4);
+  }
+
+  @mixin dark {
+    background-color: var(--mantine-color-customDarkBlue-6);
+  }
+}
+
+html, body, div#root {
+  height: 100%;
+}
+
+div#root {
+  padding: 30px;
+}

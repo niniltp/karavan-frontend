@@ -1,0 +1,11 @@
+.headerWrapper {
+  padding: 2rem;
+  text-align: center;
+}
+
+.toggleThemeButton {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 1000; /* Assure que le bouton est au-dessus des autres éléments */
+}
