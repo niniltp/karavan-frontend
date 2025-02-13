@@ -4,6 +4,7 @@ import classes from "../../../styles/PickingSongView.module.css";
 import { Logger } from "../../../utils/logger.js";
 import SongCD from '../common/SongCD.jsx';
 import { getRandomArrayFromArray } from '../../../utils/random.js';
+import { SONG_CHOICES_MAX_LENGTH } from '../../../helpers/constants.js';
 
 function PickingSongView({ gameData, songs }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -17,7 +18,7 @@ function PickingSongView({ gameData, songs }) {
       .then((res) => res.json())
       .then((files) => {
         files.map((file) => images.push(`/CDs/${file}`));
-        setCDsGallery(getRandomArrayFromArray(3, images));
+        setCDsGallery(getRandomArrayFromArray(SONG_CHOICES_MAX_LENGTH, images));
       })
       .catch((err) => console.error("Failed to load images", err));
   }, []);

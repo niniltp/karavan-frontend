@@ -32,19 +32,14 @@ function PlayersList({ owner, players, currentPlayer, gameData}) {
   const theme = useMantineTheme();
   const [orderedPlayers, setOrderedPlayers] = useState([]);
 
-  // const isCurrentPlayer = (id) => id === currentPlayer?.id;
-  // const isPlayerSinger = (id) => id === gameData.turns[gameData.currentTurn].playerId;
-  // const isPlayerOwner = (id) => id === owner;
-  // const hasFoundSong = (id) => gameData.turns[gameData.currentTurn].guessers.includes(id);
-
   useEffect(() => {
-    setOrderedPlayers(orderPlayers(players, gameData.turns));
+    setOrderedPlayers(orderPlayers(players, gameData?.rounds[gameData?.currentRound]));
   }, [gameData]);
 
   if(!owner || !players || !currentPlayer || !gameData) {
     return; // TODO : handle error or loading state
   }
-
+  
   return (
     <Card shadow="md" radius="lg" p="md" className={classes.wrapper}>
       <Title order={4}>Players list</Title>

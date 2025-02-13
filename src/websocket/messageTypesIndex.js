@@ -5,6 +5,7 @@ import { RoomStateMessage } from './messageTypes/roomStateType.js';
 import { GameStartMessage } from './messageTypes/gameStartType.js';
 import { AllPlayersReadyMessage } from './messageTypes/allPlayersReadyType.js';
 import { TimerMessage } from './messageTypes/timerType.js';
+import { TurnChangeMessage } from './messageTypes/turnChangeType.js';
 
 export const initializeRegistry = () => {
   registerMessageType(AllPlayersReadyMessage.type, {
@@ -35,5 +36,10 @@ export const initializeRegistry = () => {
   registerMessageType(TimerMessage.type, {
     validator: TimerMessage.validator,
     handler: TimerMessage.handler
+  });
+
+  registerMessageType(TurnChangeMessage.type, {
+    validator: TurnChangeMessage.validator,
+    handler: TurnChangeMessage.handler
   });
 };

@@ -17,6 +17,17 @@ function PlayingGame({ roomId, currentPlayer }) {
 
   const { WSstores } = useWebSocketContext();
 
+  const updateGameTurn = (round, turn) => {
+    setRoom({
+      ...room,
+      game: {
+       ...room.game,
+        currentTurn: turn,
+        currentRound: round
+      }
+    })
+  }
+
   // Update whole room
   useEffect(() => {
     // if(WSstores[WSmsgTypes.ROOM_STATE] !== null) {
@@ -41,6 +52,12 @@ function PlayingGame({ roomId, currentPlayer }) {
     }
   }, [WSstores[WSmsgTypes.TIMER]]);
 
+  useEffect(() => {
+    if(WSstores[WSmsgTypes.TURN_CHANGE]) {
+      updateGameTurn(WSstores[WSmsgTypes.TURN_CHANGE].round, WSstores[WSmsgTypes.TURN_CHANGE].turn);
+    }
+  }, [WSstores[WSmsgTypes.TURN_CHANGE]]);
+  
   if(isLoadingRoom) {
     return (
       <Container fluid className={classes.wrapper}>
@@ -48,7 +65,7 @@ function PlayingGame({ roomId, currentPlayer }) {
     </Container>
     )
   }
-  // gameData.turns[gameData.currentTurn].playerId
+
   return (
     <Container fluid className={classes.wrapper}>
       <Group grow preventGrowOverflow={false} align="flex-start" justify="center" gap="xl">

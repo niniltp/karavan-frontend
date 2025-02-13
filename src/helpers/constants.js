@@ -1,15 +1,8 @@
 /** OTHER **/
 export const PLAYER_USERNAME_MAX_LENGTH = 10;
+export const SONG_CHOICES_MAX_LENGTH = 3;
 
-/** BACKEND SERVER **/
-
-const SERVER_IP = '79.137.34.160';
-const SERVER_PORT = '8001';
-
-/** API **/
-// export const API_URL = `http://${SERVER_IP}:${SERVER_PORT}`;
 export const API_URL = import.meta.env.VITE_API_BASE_URL;
-// export const API_URL = 'https://${SEREVR_IP}:${SERVER_PORT}'; // Uncomment for HTTPS
 
 /** ROOM **/
 export const RoomStatus = {
@@ -38,7 +31,8 @@ export const WSmsgTypes = {
   CHAT_NEW_MSG: "new_message",
   ROOM_STATE: "room_state",
   GAME_START: "game_start",
-  TIMER: "timer"
+  TIMER: "timer",
+  TURN_CHANGE: "turn_change"
 };
 
 /** ERRORS **/
