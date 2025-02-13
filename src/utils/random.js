@@ -5,7 +5,7 @@ export const getRandomInt = (max) => {
 
 export const getRandomArrayFromArray = (n, array) => {
   if(array?.length <= 0) return null;
-
+  
   const randomArray = [];
 
   for (let i=0; i < n; i++) {

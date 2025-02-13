@@ -9,11 +9,6 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
-    resolve: {
-      alias: {
-        "@assets": path.resolve(__dirname, "src/assets"),
-      }
-    },
     define: {
       __IS_DEV__: mode === 'development',
       __IS_PROD__: mode === 'production',

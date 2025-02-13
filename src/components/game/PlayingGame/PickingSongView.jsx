@@ -8,8 +8,20 @@ import { getRandomArrayFromArray } from '../../../utils/random.js';
 function PickingSongView({ gameData, songs }) {
   const [isLoading, setIsLoading] = useState(true);
 
-  const gallery = Object.values(import.meta.glob('@assets/cds/*.{png,jpg,jpeg,PNG,JPEG}', { eager: true, as: 'url' }))
-  const CDs = getRandomArrayFromArray(3, gallery);
+  // const gallery = Object.values(import.meta.glob('@assets/cd_*.{png,jpg,jpeg,PNG,JPEG}', { eager: true, query: '?url', import: 'default' }))
+  const [CDsGallery, setCDsGallery] = useState([]);
+
+  useEffect(() => {
+    let images = [];
+    fetch("/CDs/images.json")
+      .then((res) => res.json())
+      .then((files) => {
+        files.map((file) => images.push(`/CDs/${file}`));
+        setCDsGallery(getRandomArrayFromArray(3, images));
+      })
+      .catch((err) => console.error("Failed to load images", err));
+  }, []);
+  
 
   const handleSongPicked = (song) => {
     // TODO : send to server
@@ -26,7 +38,7 @@ function PickingSongView({ gameData, songs }) {
       <Title order={5}>Pick a song</Title>
       <Group className={classes.groupWrapper} grow justify="space-between" align="center">
           {songs.map((song, index) => (
-            <SongCD key={song.id} src={CDs[index]} song={song} handleClick={handleSongPicked}  />
+            <SongCD key={song.id} src={CDsGallery[index]} song={song} handleClick={handleSongPicked}  />
           ))}
       </Group>
     </div>

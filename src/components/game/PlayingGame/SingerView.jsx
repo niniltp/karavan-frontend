@@ -4,6 +4,7 @@ import classes from "../../../styles/SingerView.module.css";
 import { GameStatus } from '../../../helpers/constants.js';
 import PickingSongView from './PickingSongView.jsx';
 import SingingSongView from './SingingSongView.jsx';
+import { Logger } from '../../../utils/logger.js';
 
 // TODO : test data
 const songs = [
@@ -17,7 +18,7 @@ function SingerView({ gameData }) {
   
   // Update whole room
   useEffect(() => {
-    console.log("Game status changed")
+    Logger.log("Game status changed");
   }, [gameData?.status?.type]);
 
   return (

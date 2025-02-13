@@ -33,17 +33,19 @@ npm -v
 
 ## Installation
 ```console
-git clone <URL>
+git clone https://github.com/niniltp/karavan-frontend.git
 cd karavan-frontend
 
-npm install # install dependencies
+# Install dependencies
+npm install
 ```
 
 ## Run the app
 ### Dev
 ```console
-npm run dev # Then go to http://localhost:5173
+npm run dev
 ```
+Then go to [http://localhost:5173](http://localhost:5173)
 
 ### To preview production
 ```console
