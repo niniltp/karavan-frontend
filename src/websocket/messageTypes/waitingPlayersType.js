@@ -1,10 +1,10 @@
 import { WSmsgTypes } from '../../helpers/constants.js';
 
-export const AllPlayersReadyMessage = {
-  type: WSmsgTypes.ALL_PLAYERS_READY,
+export const WaitingPlayersMessage = {
+  type: WSmsgTypes.WAITING_PLAYERS,
   validator: (message) => {
     const content = message.content;
-    return content === null;
+    return  Array.isArray(content);
   },
   handler: (message, setContent) => {
     setContent(message.content); // Empty string

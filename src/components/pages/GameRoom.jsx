@@ -15,17 +15,12 @@ import LeaderBoardGame from "../game/LeaderboardGame.jsx";
 import { handleError } from "../../helpers/errorHandler.js";
 import { Logger } from "../../utils/logger.js";
 
+// TODO : retrieve player info using session cookie
 const SESSION_COOKIE_NAME = "player_cookie";
-
 const useFetchPlayer = (roomId) => {
   const [currentPlayer, setCurrentPlayer] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-  // const getSessionCookie = () => {
-  //   Logger.log(`Cookie: ${Cookies.get(SESSION_COOKIE_NAME)}`);
-  //   return Cookies.get(SESSION_COOKIE_NAME);
-  // };
 
   const isPlayerMissingInfo = () => {
     return currentPlayer == null || currentPlayer.name == null || currentPlayer.id == null || 
@@ -63,7 +58,7 @@ const useFetchPlayer = (roomId) => {
 }
 
 function GameRoom() {
-  const { state } = useLocation();
+  // const { state } = useLocation();
   const navigate = useNavigate();
   const params = useParams();
   const roomId = params?.roomId;
@@ -77,19 +72,14 @@ function GameRoom() {
   // const { loadedPlayer, isLoadingPlayer, errorPlayer } = useFetchPlayer(roomId);
 
   useEffect(() => {
-    if(state?.room) {    // TODO : Check si nécessaire
-      setRoom(state.room);
-      setIsLoading(false);
-    } else {
-      roomApi.getById(roomId)
-        .then(setRoom)
-        .catch((err) => {
-          Logger.error(err);
-          setError(err);
-          handleError(err.code);
-        })
-        .finally(() => setIsLoading(false));
-    }
+    roomApi.getById(roomId)
+      .then(setRoom)
+      .catch((err) => {
+        Logger.error(err);
+        setError(err);
+        handleError(err.code);
+      })
+      .finally(() => setIsLoading(false));
 
     // if(loadedPlayer != null) {
     //   setCurrentPlayer(loadedPlayer);
@@ -118,8 +108,8 @@ function GameRoom() {
   return (
     <Container fluid className={classes.wrapper}>
       <WebSocketProvider roomId={roomId} playerId={currentPlayer.id}>
-        {room?.roomStatus === RoomStatus.WAITING ? <WaitingGame currentPlayer={currentPlayer}
-                                                      setCurrentPlayer={setCurrentPlayer} 
+        {room?.roomStatus === RoomStatus.WAITING ? <WaitingGame currentPlayerId={currentPlayer.id} 
+                                                      currentPlayerName={currentPlayer.name}
                                                       setRoomStatus={setRoomStatus}
                                                       /> : ''}
         {room?.roomStatus === RoomStatus.PLAYING ? <PlayingGame roomId={roomId}

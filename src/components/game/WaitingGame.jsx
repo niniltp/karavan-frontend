@@ -1,38 +1,47 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useMantineTheme, Group, Stack, Container, Avatar, Text, Title, Button, LoadingOverlay, ActionIcon} from "@mantine/core";
 import { useLocation, useParams} from "react-router-dom";
 import { roomApi } from '../../api/roomApi.js';
 import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { FaCrown } from "react-icons/fa";
 import classes from "../../styles/WaitingGame.module.css";
-import { useWebSocketContext }  from '../../websocket/WebSocketContext.jsx';
+import { useWSMessageStore }  from '../../websocket/WebSocketContext.jsx';
 import { WSmsgTypes, RoomStatus, } from '../../helpers/constants.js';
 import { handleError } from "../../helpers/errorHandler.js";
 import { Logger } from "../../utils/logger.js";
 
 const AVATAR_IMG = "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png";
 
-function WaitingGame({ currentPlayer, setCurrentPlayer, setRoomStatus}) {
-  const { state } = useLocation();
+// TODO : currentPlayerName is temporary and to be removed when refactor of API
+function WaitingGame({ currentPlayerId, currentPlayerName, setRoomStatus}) {
   const params = useParams();
   const roomId = params?.roomId;
 
   const [room, setRoom] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPlayerReadyState, setCurrentPlayerReadyState] = useState(false);
 
-  const isCurrentPlayer = (id) => id === currentPlayer?.id;
+  const isCurrentPlayer = (id) => id === currentPlayerId;
   const isPlayerReady = (id) => room.players.find(p => p.id === id)?.ready;
   const isPlayerOwner = (id) => id === room.owner;
 
-  const { sendJsonMessage, WSstores, WSisConnected } = useWebSocketContext();
-
+  const localWSstores = {
+    roomState: null,
+    gameStart: null,
+    playerReady: null
+  };
+  
+  localWSstores.roomState = useWSMessageStore(WSmsgTypes.ROOM_STATE);
+  localWSstores.gameStart = useWSMessageStore(WSmsgTypes.GAME_START);
+  localWSstores.playerReady = useWSMessageStore(WSmsgTypes.PLAYER_READY);
+  
   const theme = useMantineTheme();
 
   const handleReadyButton = () => {
     roomApi
-      .setPlayerReady(roomId, currentPlayer?.name, !currentPlayer?.ready)  // TODO : replace name by cookie in header
+      .setPlayerReady(roomId, currentPlayerName, !currentPlayerReadyState)  // TODO : replace name by cookie in header
       .then(() => {
-        setCurrentPlayer((prev) => ({...prev, ready: !prev.ready }));
+        setCurrentPlayerReadyState(!currentPlayerReadyState);
       })
       .catch((err) => {
         Logger.error(err);
@@ -64,15 +73,15 @@ function WaitingGame({ currentPlayer, setCurrentPlayer, setRoomStatus}) {
 
   // Start game
   useEffect(() => {
-    if(WSstores?.game_start !== null) {
+    if(localWSstores.gameStart !== null) {
       setRoomStatus(RoomStatus.PLAYING);
     }
-  }, [WSstores?.game_start]);
+  }, [localWSstores.gameStart]);
   
   // Update whole room
   useEffect(() => {
-    if(WSstores[WSmsgTypes.ROOM_STATE] !== null) {
-      setRoom(WSstores[WSmsgTypes.ROOM_STATE]);
+    if(localWSstores.roomState !== null) {
+      setRoom(localWSstores.roomState);
     } else {
       roomApi.getById(roomId)
       .then(setRoom)
@@ -82,14 +91,14 @@ function WaitingGame({ currentPlayer, setCurrentPlayer, setRoomStatus}) {
       })
       .finally(() => setIsLoading(false));
     }
-  }, [WSstores?.room_state]);
+  }, [localWSstores.roomState]);
 
   // Update players state (ready/unready)
   useEffect(() => {
-    if(WSstores[WSmsgTypes.PLAYER_READY] !== null) {
-      const updatedPlayerId = WSstores[WSmsgTypes.PLAYER_READY].playerName;
-      const updatedReadyState = WSstores[WSmsgTypes.PLAYER_READY].ready;
-
+    if(localWSstores.playerReady !== null) {
+      const updatedPlayerId = localWSstores.playerReady.playerName;
+      const updatedReadyState = localWSstores.playerReady.ready;
+      
       const newPlayersState = room?.players?.map((player) => {
         if(player.name === updatedPlayerId) {
           return {...player, ready: updatedReadyState }
@@ -103,10 +112,11 @@ function WaitingGame({ currentPlayer, setCurrentPlayer, setRoomStatus}) {
         }
       });
     }
-  }, [WSstores[WSmsgTypes.PLAYER_READY]]);
+  }, [localWSstores.playerReady]);
 
   return (
     <Container className={classes.wrapper}>
+      
       { isLoading ? 
         <LoadingOverlay visible={isLoading} /> : 
         <Container>
@@ -138,7 +148,7 @@ function WaitingGame({ currentPlayer, setCurrentPlayer, setRoomStatus}) {
                   {isCurrentPlayer(player.id) ? <Button onClick={handleReadyButton} visibleFrom="xs" variant="gradient" size="xs" gradient={{ from: 'teal', to: 'green', deg: 90 }}>Ready</Button> : ""}
                 </Group>
                 {/* Show remove button only if current player is owner AND owner cannot be removed */}
-                <ActionIcon onClick={() => {handleRemoveButton(player.id)}} className={isPlayerOwner(currentPlayer.id) && player.id !== room.owner ? '' : classes.hidden} variant="subtle" color="red" size="sm" radius="md" aria-label="Remove">
+                <ActionIcon onClick={() => {handleRemoveButton(player.id)}} className={isPlayerOwner(currentPlayerId) && player.id !== room.owner ? '' : classes.hidden} variant="subtle" color="red" size="sm" radius="md" aria-label="Remove">
                   <Cross2Icon style={{ width: 15, height: 15 }}/> 
                 </ActionIcon>
               </Group>
@@ -150,7 +160,7 @@ function WaitingGame({ currentPlayer, setCurrentPlayer, setRoomStatus}) {
                     variant="gradient" size="sm" gradient={{ from: 'teal', to: 'green', deg: 90 }}>Ready</Button>
                 </Group>
                 {/* Show Start button only if current player is owner */}
-                {isPlayerOwner(currentPlayer.id) ? 
+                {isPlayerOwner(currentPlayerId) ? 
                   <Group justify="center" >
                     <Button onClick={handleStartButton} 
                       variant="gradient" size="sm" gradient={{ from: 'yellow', to: 'orange', deg: 124 }}>Start game</Button>

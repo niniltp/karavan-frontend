@@ -6,7 +6,7 @@ import GuesserView from './GuesserView.jsx';
 import TimerGame from '../common/TimerGame.jsx';
 import { isPlayerSingerFromGameData } from '../../../helpers/gameHelpers.js';
 
-function PlayingGameContent({ timer, players, currentPlayer, gameData }) {
+function PlayingGameContent({ tempTestTimer, currentPlayer, gameData }) {
   const [gameStatus, setGameStatus] = useState(null);
   
   // Update whole room
@@ -17,7 +17,7 @@ function PlayingGameContent({ timer, players, currentPlayer, gameData }) {
   return (
     <Card shadow="sm" radius="lg" p="md" className={classes.wrapper}>
       <Title order={4}>Game</Title>
-      <TimerGame timer={timer}/>
+      <TimerGame tempTestTimer={tempTestTimer} />
       {isPlayerSingerFromGameData(currentPlayer.id, gameData) ? <SingerView gameData={gameData} /> : <GuesserView />}
     </Card>
   );

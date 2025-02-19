@@ -7,9 +7,8 @@ import { Player } from "../helpers/mapping/player.js";
 import { Game } from "../helpers/mapping/game.js";
 
 export default function Test() {
-  const timer = "Round 0 - Timer: 7 seconds";
   const owner = "ad4ea9cc-9837-486b-b9d2-909644cf3835";
-
+  const tempTestTimer = "Round 0 - Timer: 7 seconds";
   const currentPlayer = Player.create("ad4ea9cc-9837-486b-b9d2-909644cf3835", "liliuaaaa", true, 0, true);
 
   const players = [
@@ -32,6 +31,7 @@ export default function Test() {
     0,
     [
       [{
+        // playerId: "678fa63a-9bc6-4169-8550-cb21addeb451",
         playerId: "ad4ea9cc-9837-486b-b9d2-909644cf3835",
         song: null,
         guessers: [
@@ -106,8 +106,8 @@ export default function Test() {
   return (
     <Container fluid className={classes.wrapper}>
       <Group className={classes.groupWrapper} grow preventGrowOverflow={false} align="flex-start" justify="center" gap="xl">
-        <PlayersList owner={owner} players={players} currentPlayer={currentPlayer} gameData={gameData} />
-        <PlayingGameContent timer={timer} players={players} currentPlayer={currentPlayer} gameData={gameData} />
+        <PlayersList owner={owner} players={players} currentPlayer={currentPlayer} gameData={gameData}/>
+        <PlayingGameContent tempTestTimer={tempTestTimer} currentPlayer={currentPlayer} gameData={gameData} />
       </Group>
     </Container>
   )

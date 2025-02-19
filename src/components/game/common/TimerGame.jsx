@@ -1,14 +1,18 @@
 // import classes from "../../../styles/TimerGame.module.css";
+import { useWSMessageStore }  from '../../../websocket/WebSocketContext.jsx';
+import { WSmsgTypes } from '../../../helpers/constants.js';
 
-function TimerGame({ timer }) {
+function TimerGame({tempTestTimer}) {
 
-  // useEffect(() => {
-
-  // }, [timer]);
+  const localWSstores = {
+    timer: null
+  };
+  // TODO : only for test, to be removed
+  tempTestTimer ? localWSstores.timer = tempTestTimer : localWSstores.timer = useWSMessageStore(WSmsgTypes.TIMER);
 
   return (
     <div /*className={classes.wrapper}*/>
-      {timer}
+      {localWSstores.timer}
     </div>
   );
 }

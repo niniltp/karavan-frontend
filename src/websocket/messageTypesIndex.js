@@ -6,8 +6,14 @@ import { GameStartMessage } from './messageTypes/gameStartType.js';
 import { AllPlayersReadyMessage } from './messageTypes/allPlayersReadyType.js';
 import { TimerMessage } from './messageTypes/timerType.js';
 import { TurnChangeMessage } from './messageTypes/turnChangeType.js';
+import { WaitingPlayersMessage } from './messageTypes/waitingPlayersType.js';
 
 export const initializeRegistry = () => {
+  registerMessageType(WaitingPlayersMessage.type, {
+    validator: WaitingPlayersMessage.validator,
+    handler: WaitingPlayersMessage.handler
+  });
+
   registerMessageType(AllPlayersReadyMessage.type, {
     validator: AllPlayersReadyMessage.validator,
     handler: AllPlayersReadyMessage.handler

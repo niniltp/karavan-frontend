@@ -26,6 +26,7 @@ export const GameStatus = {
 export const WEBSOCKET_URL = import.meta.env.VITE_API_BASE_WS;
 
 export const WSmsgTypes = {
+  WAITING_PLAYERS: "waiting_for_players",
   ALL_PLAYERS_READY: "all_players_ready",
   PLAYER_READY: "player_ready",
   CHAT_NEW_MSG: "new_message",

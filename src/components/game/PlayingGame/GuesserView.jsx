@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Container, LoadingOverlay, Group, Stack, Card, Button, TextInput, Text, Title} from "@mantine/core";
-// import classes from "../../../styles/GuesserView.module.css";
+import { Loader, Stack, Text} from "@mantine/core";
+import classes from "../../../styles/GuesserView.module.css";
 
 function GuesserView() {
   const [isLoading, setIsLoading] = useState(true);
@@ -11,9 +11,11 @@ function GuesserView() {
   }, []);
 
   return (
-    <div /*className={classes.wrapper}*/>
-      <Title order={5}>Guesser view</Title>
-      
+    <div className={classes.wrapper} >
+      <Stack gap="lg" align="center" >
+        <Loader />
+        <Text>Waiting for the singer to pick a song...</Text>
+      </Stack>
     </div>
   );
 }
