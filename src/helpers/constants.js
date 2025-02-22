@@ -1,8 +1,12 @@
 /** OTHER **/
 export const PLAYER_USERNAME_MAX_LENGTH = 10;
 export const SONG_CHOICES_MAX_LENGTH = 3;
+export const CHAT_MAX_LENGTH = 500;
 
 export const API_URL = import.meta.env.VITE_API_BASE_URL;
+
+/** TODO: temp **/
+export const AVATAR_IMG = "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png";
 
 /** ROOM **/
 export const RoomStatus = {
@@ -16,8 +20,8 @@ export const GameStatus = {
   INITIALIZED: "initialized",
   WAITING_PLAYERS: "waiting_players",
   WAITING_OWNER: "waiting_owner",
-  CHOOSING_SONG: "choosing_song",
-  PLAYING_ROUND: "playing_round"
+  PICKING_SONG: "picking_song",
+  GUESSING_SONG: "GUESSING_SONG"
 };
 
 /** WEBSOCKET **/
@@ -33,7 +37,10 @@ export const WSmsgTypes = {
   ROOM_STATE: "room_state",
   GAME_START: "game_start",
   TIMER: "timer",
-  TURN_CHANGE: "turn_change"
+  TURN_CHANGE: "turn_change",
+  ROUND_CHANGE: "round_change", // TODO
+  SONG_CHOICES: "pick_song",
+  NO_SONG_PICKED: "no_song_chosen"
 };
 
 /** ERRORS **/
@@ -48,6 +55,8 @@ export const ErrorCodes = {
   ROOM_STARTING_ALL_PLAYERS_NOT_READY: 203,
   PLAYER_READY_NOT_IN_ROOM: 204,
   PLAYER_NOT_OWNER: 205,
+  CHAT_MAX_LENGTH: 306,
+  CHAT_EMPTY_MSG: 307,
   UNAUTHORIZED_ACTION: 400, // Generic error code for unauthorized actions
   UNKNOWN_ERROR: 1 // Generic error code
 };
@@ -61,6 +70,8 @@ export const ErrorUserMessages = {
   [ErrorCodes.ROOM_FULL]: 'Sorry lonely soul, seems like there is no more room for you here.',
   [ErrorCodes.ROOM_STARTING_ALL_PLAYERS_NOT_READY]: 'Wait, were you trying to start playing without waiting for your friends ? That\'s not very nice.',
   [ErrorCodes.PLAYER_NOT_OWNER]: 'Sorry peasant, you are not the Ruler of this realm.',
+  [ErrorCodes.CHAT_MAX_LENGTH]: 'Wow, got that much things to say ?',
+  [ErrorCodes.CHAT_EMPTY_MSG]: '...hello ? Did you say something ?',
   [ErrorCodes.UNAUTHORIZED_ACTION]: 'Trying to break the rules ? Maybe you should go to school instead.',
   [ErrorCodes.UNKNOWN_ERROR]: 'An unexpected error occurred. Please try again later or contact the support team.'
 }

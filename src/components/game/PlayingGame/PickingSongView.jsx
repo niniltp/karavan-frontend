@@ -4,20 +4,21 @@ import classes from "../../../styles/PickingSongView.module.css";
 import { Logger } from "../../../utils/logger.js";
 import SongCD from '../common/SongCD.jsx';
 import { getRandomArrayFromArray } from '../../../utils/random.js';
-import { SONG_CHOICES_MAX_LENGTH } from '../../../helpers/constants.js';
-
-
-// TODO : test data
-const songs = [
-  { id: 1, title: 'Song 1', artist: 'Artist 1'},
-  { id: 2, title: 'Song 2', artist: 'Artist 2'},
-  { id: 3, title: 'Song 3', artist: 'Artist 3'}
-];
+import { SONG_CHOICES_MAX_LENGTH, WSmsgTypes } from '../../../helpers/constants.js';
+import { useWSMessageStore } from '../../../websocket/WebSocketContext.jsx';
 
 function PickingSongView() {
   const [isLoading, setIsLoading] = useState(true);
+  const [songs, setSongs] = useState([]);
   const [CDsGallery, setCDsGallery] = useState([]);
 
+  const localWSstores = {
+    songChoices: null
+  };
+  // Retrieve song choices from WS message
+  localWSstores.songChoices = useWSMessageStore(WSmsgTypes.SONG_CHOICES);
+
+  // Load and pick random CD images
   useEffect(() => {
     let images = [];
     fetch("/CDs/images.json")
@@ -26,7 +27,9 @@ function PickingSongView() {
         files.map((file) => images.push(`/CDs/${file}`));
         setCDsGallery(getRandomArrayFromArray(SONG_CHOICES_MAX_LENGTH, images));
       })
-      .catch((err) => console.error("Failed to load images", err));
+      .catch((err) => {
+        throw new Error("Error loading CD images", err); // TODO: refactor with error code etc
+      });
   }, []);
   
 
@@ -35,10 +38,22 @@ function PickingSongView() {
     Logger.log(`Picked song: ${song.title} (id: ${song.id})`);
   };
 
-  // Update whole room
   useEffect(() => {
-    setIsLoading(false);
-  }, []);
+    if(localWSstores.songChoices.songs.length > 0) {
+      setSongs(localWSstores.songChoices.songs);
+      setIsLoading(false);
+    } else {
+      throw new Error("[WEBSOCKET] Missing song choices"); // TODO: refactor with error code etc
+    }
+  }, [localWSstores.songChoices]);
+
+  // if(isLoading) {
+  //   return (
+  //     <Container fluid className={classes.wrapper}>
+  //       <LoadingOverlay visible={isLoading} zIndex={1000} />
+  //     </Container>
+  //   )
+  // }
 
   return (
     <div /*className={classes.wrapper}*/>

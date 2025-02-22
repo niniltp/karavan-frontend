@@ -1,7 +1,6 @@
-.wrapper {
+.cardWrapper {
   /* min-width: 70%; */
   min-width: 18rem;
-  padding: 0.7rem 1rem 1rem;
   text-align: center;
   background: alpha(
     light-dark(

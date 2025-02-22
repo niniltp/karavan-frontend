@@ -13,11 +13,10 @@ initializeRegistry();
 // Helper: Parse an incoming WebSocket message
 const parseWSmsg = (message) => {
   const parsedMsg = JSON.parse(message.data);
-  const content = parsedMsg?.content != "" ? JSON.parse(parsedMsg?.content) : null;
   
   return {
     type: parsedMsg.type,
-    content: content
+    content: parsedMsg.content
   }
 }
 
@@ -26,19 +25,11 @@ function wsReducer(state, action) {
   switch (action.type) {
     case 'ADD_MESSAGE': {
       const { messageType, data } = action.payload;
-      if (messageType === WSmsgTypes.CHAT_NEW_MSG) {
-        // Append chat messages
-        return {
-          ...state,
-          [messageType]: [...(state[messageType] || []), data],
-        };
-      } else {
-        // Replace for state messages (store only the latest content).
-        return {
-          ...state,
-          [messageType]: data,
-        };
-      }
+      // Replace for state messages (store only the latest content)
+      return {
+        ...state,
+        [messageType]: data,
+      };
     }
     default:
       return state;
@@ -50,7 +41,7 @@ const initialState = {
   [WSmsgTypes.WAITING_PLAYERS]: null,
   [WSmsgTypes.ALL_PLAYERS_READY]: null,
   [WSmsgTypes.PLAYER_READY]: null,
-  [WSmsgTypes.CHAT_NEW_MSG]: [],
+  [WSmsgTypes.CHAT_NEW_MSG]: null,
   [WSmsgTypes.ROOM_STATE]: null,
   [WSmsgTypes.GAME_START]: null,
   [WSmsgTypes.TIMER]: null,

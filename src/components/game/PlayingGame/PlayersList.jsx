@@ -5,8 +5,7 @@ import { GiMicrophone } from "react-icons/gi";
 import classes from "../../../styles/PlayersList.module.css";
 import { useEffect, useState } from "react";
 import { isCurrentPlayer, isPlayerSingerFromGameData, isPlayerOwner, hasPlayerFoundSongFromGameData} from '../../../helpers/gameHelpers.js';
-
-const AVATAR_IMG = "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png";
+import { AVATAR_IMG } from "../../../helpers/constants.js";
 
 // TODO : correct duplicate users in orderedPlayers array
 const orderPlayers = (players, orderIds) => {

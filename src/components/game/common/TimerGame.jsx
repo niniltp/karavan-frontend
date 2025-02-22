@@ -1,18 +1,19 @@
 // import classes from "../../../styles/TimerGame.module.css";
 import { useWSMessageStore }  from '../../../websocket/WebSocketContext.jsx';
 import { WSmsgTypes } from '../../../helpers/constants.js';
+import { Text } from '@mantine/core'
 
-function TimerGame({tempTestTimer}) {
+function TimerGame() {
 
   const localWSstores = {
     timer: null
   };
-  // TODO : only for test, to be removed
-  tempTestTimer ? localWSstores.timer = tempTestTimer : localWSstores.timer = useWSMessageStore(WSmsgTypes.TIMER);
+
+  localWSstores.timer = useWSMessageStore(WSmsgTypes.TIMER);
 
   return (
     <div /*className={classes.wrapper}*/>
-      {localWSstores.timer}
+      <Text>{localWSstores.timer?.remainingTime}</Text>
     </div>
   );
 }

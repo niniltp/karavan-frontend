@@ -5,20 +5,20 @@ import SingerView from './SingerView.jsx';
 import GuesserView from './GuesserView.jsx';
 import TimerGame from '../common/TimerGame.jsx';
 import { isPlayerSingerFromGameData } from '../../../helpers/gameHelpers.js';
+import { useWSMessageStore } from '../../../websocket/WebSocketContext.jsx';
 
-function PlayingGameContent({ tempTestTimer, currentPlayer, gameData }) {
-  const [gameStatus, setGameStatus] = useState(null);
-  
-  // Update whole room
-  useEffect(() => {
-    setGameStatus(gameData?.status?.type);
-  }, [gameStatus]);
+function PlayingGameContent({ currentPlayer, gameData, roomId, players }) {
+  // const [gameStatus, setGameStatus] = useState(null);
+
+  // useEffect(() => {
+  //   setGameStatus(gameData?.status?.type);
+  // }, [gameStatus]);
 
   return (
-    <Card shadow="sm" radius="lg" p="md" className={classes.wrapper}>
-      <Title order={4}>Game</Title>
-      <TimerGame tempTestTimer={tempTestTimer} />
-      {isPlayerSingerFromGameData(currentPlayer.id, gameData) ? <SingerView gameData={gameData} /> : <GuesserView />}
+    <Card shadow="sm" radius="lg" p="xl" className={classes.cardWrapper}>
+      <Text fw={700}>Round {gameData.currentRound}</Text>
+      <TimerGame />
+      {isPlayerSingerFromGameData(currentPlayer.id, gameData) ? <SingerView gameData={gameData} /> : <GuesserView gameData={gameData} roomId={roomId} currentPlayer={currentPlayer} players={players} />}
     </Card>
   );
 }

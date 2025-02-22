@@ -6,12 +6,12 @@ export const ChatMessage = {
     const content = message.content;
 
     return typeof content.content === 'string' &&
-      typeof content.sender === 'string' &&
+      typeof content.sender_id === 'string' &&
       typeof content.timestamp === 'string';
   },
   handler: (message, setChat) => {
     const content = {
-      sender: message.content.sender,
+      senderId: message.content.sender_id,
       content: message.content.content,
       timestamp: message.content.timestamp
     }

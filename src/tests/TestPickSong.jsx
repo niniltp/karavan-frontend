@@ -20,7 +20,7 @@ export default function Test() {
 
   const gameData = Game.create(
     {
-      type: GameStatus.CHOOSING_SONG,
+      type: GameStatus.PICKING_SONG,
       detail: null
     },
     {

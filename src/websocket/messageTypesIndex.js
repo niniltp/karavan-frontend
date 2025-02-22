@@ -7,6 +7,9 @@ import { AllPlayersReadyMessage } from './messageTypes/allPlayersReadyType.js';
 import { TimerMessage } from './messageTypes/timerType.js';
 import { TurnChangeMessage } from './messageTypes/turnChangeType.js';
 import { WaitingPlayersMessage } from './messageTypes/waitingPlayersType.js';
+import { SongChoicesMessage } from './messageTypes/songChoicesType.js';
+import { NoSongPickedMessage } from './messageTypes/noSongPickedType.js';
+import { RoundChangeMessage } from './messageTypes/roundChangeType.js';
 
 export const initializeRegistry = () => {
   registerMessageType(WaitingPlayersMessage.type, {
@@ -44,8 +47,23 @@ export const initializeRegistry = () => {
     handler: TimerMessage.handler
   });
 
+  registerMessageType(RoundChangeMessage.type, {
+    validator: RoundChangeMessage.validator,
+    handler: RoundChangeMessage.handler
+  });
+
   registerMessageType(TurnChangeMessage.type, {
     validator: TurnChangeMessage.validator,
     handler: TurnChangeMessage.handler
+  });
+
+  registerMessageType(SongChoicesMessage.type, {
+    validator: SongChoicesMessage.validator,
+    handler: SongChoicesMessage.handler
+  });
+
+  registerMessageType(NoSongPickedMessage.type, {
+    validator: NoSongPickedMessage.validator,
+    handler: NoSongPickedMessage.handler
   });
 };

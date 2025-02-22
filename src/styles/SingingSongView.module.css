@@ -1,0 +1,7 @@
+.wrapper {
+  text-align: center;
+}
+
+.lyricLine:hover {
+  background-color: var(--mantine-color-blue-light-hover);
+}

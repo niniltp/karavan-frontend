@@ -4,7 +4,7 @@ import Header from './components/Header.jsx'
 import GameRoom from './components/pages/GameRoom.jsx'
 import CreateRoom from "./components/pages/CreateRoom.jsx";
 import Error404Page from "./components/pages/Error404Page.jsx";
-import Test from "./tests/Test.jsx";
+import Test from "./tests/TestSingingSong.jsx";
 
 const router = createBrowserRouter([
   {

@@ -8,7 +8,6 @@ import { PLAYER_USERNAME_MAX_LENGTH, ErrorCodes } from '../../helpers/constants.
 import { Logger } from "../../utils/logger.js";
 
 function JoiningGame({roomId, setCurrentPlayer}) {
-  const {error, setError} = useState(null);
   const form = useForm({
     initialValues: {
       username: ''

@@ -1,0 +1,26 @@
+.wrapper {
+  max-width: 800px;
+  /* min-width: ;
+  min-height: 400px;
+  padding: 0.7rem 1rem 1rem; */
+  background: alpha(
+    light-dark(
+      var(--mantine-color-customDarkBlue-2), 
+      var(--mantine-color-customDarkBlue-3))
+  , 0.7);
+  padding: 1em;
+  margin: auto;
+  /* max-height: 50vh !important; */
+}
+
+.chatMessage {
+  transition: 0.3s;
+}
+
+.chatMessage:hover {
+  transform: translate(0, -3px)
+}
+
+.chatInput {
+  width: 80%;
+}
