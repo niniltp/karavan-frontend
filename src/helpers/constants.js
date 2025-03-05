@@ -37,7 +37,7 @@ export const WSmsgTypes = {
   CHAT_NEW_MSG: "new_message",
   ROOM_STATE: "room_state",
   GAME_START: "game_start",
-  GAME_PHASE_CHANGE: "new_game_phase",
+  GAME_PHASE_CHANGE: "phase_change",
   TIMER: "timer",
   TURN_ENDED_PREMATURELY: "turn_ended_prematurely",
   TURN_CHANGE: "turn_change",
