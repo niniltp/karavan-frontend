@@ -20,7 +20,7 @@ const parseWSmsg = (message) => {
   }
 }
 
-// Reducer for managing message stores -> append for chat messages (array) ; replace for state messages (objects) 
+// Reducer for managing message stores
 function wsReducer(state, action) {
   switch (action.type) {
     case 'ADD_MESSAGE': {

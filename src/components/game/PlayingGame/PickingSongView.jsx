@@ -6,8 +6,11 @@ import SongCD from '../common/SongCD.jsx';
 import { getRandomArrayFromArray } from '../../../utils/random.js';
 import { SONG_CHOICES_MAX_LENGTH, WSmsgTypes } from '../../../helpers/constants.js';
 import { useWSMessageStore } from '../../../websocket/WebSocketContext.jsx';
+import { ErrorCodes } from '../../../helpers/constants.js';
+import { gameApi } from '../../../api/gameApi.js';
+import { handleError } from "../../../helpers/errorHandler.js";
 
-function PickingSongView() {
+function PickingSongView({ roomId }) {
   const [isLoading, setIsLoading] = useState(true);
   const [songs, setSongs] = useState([]);
   const [CDsGallery, setCDsGallery] = useState([]);
@@ -28,32 +31,36 @@ function PickingSongView() {
         setCDsGallery(getRandomArrayFromArray(SONG_CHOICES_MAX_LENGTH, images));
       })
       .catch((err) => {
-        throw new Error("Error loading CD images", err); // TODO: refactor with error code etc
+        Logger.error(err);
+        handleError(ErrorCodes.UNKNOWN_ERROR); // TODO: refactor with error code etc
       });
   }, []);
   
 
   const handleSongPicked = (song) => {
-    // TODO : send to server
     Logger.log(`Picked song: ${song.title} (id: ${song.id})`);
+    gameApi
+      .postSongChoice(roomId, song.id)
+      .catch((err) => {
+        Logger.error(err);
+        handleError(err.code); // TODO: refactor with error code etc
+      });
   };
 
   useEffect(() => {
-    if(localWSstores.songChoices.songs.length > 0) {
+    if(localWSstores.songChoices && localWSstores.songChoices.songs?.length > 0) {
       setSongs(localWSstores.songChoices.songs);
       setIsLoading(false);
-    } else {
-      throw new Error("[WEBSOCKET] Missing song choices"); // TODO: refactor with error code etc
     }
   }, [localWSstores.songChoices]);
 
-  // if(isLoading) {
-  //   return (
-  //     <Container fluid className={classes.wrapper}>
-  //       <LoadingOverlay visible={isLoading} zIndex={1000} />
-  //     </Container>
-  //   )
-  // }
+  if(isLoading) {
+    return (
+      <Container fluid>
+        <LoadingOverlay visible={isLoading} zIndex={1000} />
+      </Container>
+    )
+  }
 
   return (
     <div /*className={classes.wrapper}*/>

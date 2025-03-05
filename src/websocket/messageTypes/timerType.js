@@ -1,4 +1,4 @@
-import { WSmsgTypes, GameStatus } from '../../helpers/constants.js';
+import { WSmsgTypes, GamePhase } from '../../helpers/constants.js';
 
 export const TimerMessage = {
   type: WSmsgTypes.TIMER,
@@ -11,7 +11,7 @@ export const TimerMessage = {
   },
   handler: (message, setTimer) => {
     const content = {
-      currentGameStatus: message.content.current_phase === "picking_song" ? GameStatus.PICKING_SONG : GameStatus.GUESSING_SONG,
+      currentGamePhase: message.content.current_phase === "picking_song" ? GamePhase.PICKING_SONG : GamePhase.GUESSING_SONG,
       remainingTime: message.content.remaining_time,
       round: message.content.round,
       turn: message.content.turn

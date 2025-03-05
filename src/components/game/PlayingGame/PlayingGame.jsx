@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Container, LoadingOverlay, Group, Stack, Button, TextInput, Text, Title} from "@mantine/core";
 import { roomApi } from '../../../api/roomApi.js';
 import { useWSMessageStore }  from '../../../websocket/WebSocketContext.jsx';
-import { WSmsgTypes, GameStatus } from '../../../helpers/constants.js';
+import { WSmsgTypes, GamePhase } from '../../../helpers/constants.js';
 import PlayersList from './PlayersList.jsx';
 import PlayingGameContent from './PlayingGameContent.jsx';
 import classes from "../../../styles/PlayingGame.module.css";
@@ -17,27 +17,29 @@ function PlayingGame({ roomId, currentPlayer }) {
     roomState: null,
     turnChange: null,
     roundChange: null,
-    noSongPicked: null
+    noSongPicked: null,
+    gamePhaseChange: null
   };
   
   localWSstores.roomState = useWSMessageStore(WSmsgTypes.ROOM_STATE);
   localWSstores.turnChange = useWSMessageStore(WSmsgTypes.TURN_CHANGE);
   localWSstores.roundChange = useWSMessageStore(WSmsgTypes.ROUND_CHANGE);
   localWSstores.noSongPicked = useWSMessageStore(WSmsgTypes.NO_SONG_PICKED);
+  localWSstores.gamePhaseChange = useWSMessageStore(WSmsgTypes.GAME_PHASE_CHANGE);
 
-  const updateGameStatus = (gameStatus) => {
-    if(room && gameStatus) {  // Check if exists in constants
+  const updateGamePhase = (gamePhase) => {
+    if(room && gamePhase) {  // Check if exists in constants
       setRoom({
         ...room,
         game: {
           ...room.game,
           status: {
             ...room.game.status,
-            type: gameStatus
+            type: gamePhase
           }
         }
       });
-      Logger.log(`Game status updated to ${gameStatus}`);
+      Logger.log(`Game status updated to ${gamePhase}`);
     }
   }
 
@@ -52,6 +54,7 @@ function PlayingGame({ roomId, currentPlayer }) {
     })
   }
 
+  // TODO : check if necessary
   // Update whole room when room state changes
   useEffect(() => {
     roomApi.getById(roomId)
@@ -66,29 +69,38 @@ function PlayingGame({ roomId, currentPlayer }) {
     .finally(() => setIsLoadingRoom(false));
   }, [localWSstores.roomState]);
 
+  // Update component when turn changes
   useEffect(() => {
     if(localWSstores.turnChange) {
       updateGameRoundTurn(localWSstores.turnChange.round, localWSstores.turnChange.turn);
-      updateGameStatus(GameStatus.PICKING_SONG); // TODO: update when new phase WS msg received
+      // updateGamePhase(GamePhase.PICKING_SONG); // TODO: update when new phase WS msg received
       Logger.log(`New turn : Round ${localWSstores.turnChange.round} | Turn ${localWSstores.turnChange.turn}`);
     }
   }, [localWSstores.turnChange]);
 
+  // Update component when round changes
   useEffect(() => {
     if(localWSstores.roundChange) {
       updateGameRoundTurn(localWSstores.roundChange.round, localWSstores.roundChange.turn);
-      updateGameStatus(GameStatus.PICKING_SONG); // TODO: update when new phase WS msg received
       Logger.log(`New round : Round ${localWSstores.roundChange.round} | Turn ${localWSstores.roundChange.turn}`);
     }
   }, [localWSstores.roundChange]);
 
-  // Update game status when no song was picked by singer
+  // // Update game status when no song was picked by singer
+  // useEffect(() => {
+  //   if(localWSstores.noSongPicked) {
+  //     updateGamePhase(GamePhase.GUESSING_SONG); // TODO: update when new phase WS msg received
+  //     Logger.log("No song picked from singer !");
+  //   }
+  // }, [localWSstores.noSongPicked]);
+
+    // Update component when game phase changes
   useEffect(() => {
-    if(localWSstores.noSongPicked) {
-      updateGameStatus(GameStatus.GUESSING_SONG); // TODO: update when new phase WS msg received
-      Logger.log("No song picked from singer !");
+    if(localWSstores.gamePhaseChange) {
+      updateGamePhase(localWSstores.gamePhaseChange.phase); // TODO: update when new phase WS msg received
+      Logger.log(`New game phase : ${localWSstores.gamePhaseChange.phase}`);
     }
-  }, [localWSstores.noSongPicked]);
+  }, [localWSstores.gamePhaseChange]);
   
   if(isLoadingRoom) {
     return (

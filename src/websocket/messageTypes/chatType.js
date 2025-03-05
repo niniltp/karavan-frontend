@@ -15,6 +15,6 @@ export const ChatMessage = {
       content: message.content.content,
       timestamp: message.content.timestamp
     }
-    setChat(prev => [...prev, content]);
+    setChat(content);
   }
 };

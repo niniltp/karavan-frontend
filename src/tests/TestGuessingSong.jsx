@@ -2,7 +2,7 @@ import { Container, Group, Card, Text } from "@mantine/core";
 import GuesserView from '../components/game/PlayingGame/GuesserView.jsx';
 import classes from "../styles/PlayingGame.module.css";
 import classesContent from "../styles/PlayingGameContent.module.css";
-import { GameStatus } from "../helpers/constants.js";
+import { GamePhase } from "../helpers/constants.js";
 import { Player } from "../helpers/mapping/player.js";
 import { Game } from "../helpers/mapping/game.js";
 import { WebSocketProvider } from "../websocket/WebSocketContext.jsx";
@@ -22,7 +22,7 @@ export default function Test() {
 
   const gameData = Game.create(
     {
-      type: GameStatus.GUESSING_SONG,
+      type: GamePhase.GUESSING_SONG,
       detail: null
     },
     {

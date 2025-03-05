@@ -9,8 +9,14 @@ export const Song = {
     if(!Song.validator(APIsong)) {
       throw new Error('Invalid data for mapping Song object'); // TODO : refactor with error code etc
     }
+
+    let song;
   
-    const song = Song.create(APIsong.id, APIsong.artist, APIsong.title);
+    if(Object.hasOwn(APIsong, 'lyrics')) {
+      song = Song.create(APIsong.id, APIsong.artist, APIsong.title, APIsong.lyrics);
+    } else {
+      song = Song.create(APIsong.id, APIsong.artist, APIsong.title);
+    }
 
     return song;
   },
@@ -24,11 +30,12 @@ export const Song = {
 
     return songs;
   },
-  create: (id, artist, title) => {
+  create: (id, artist, title, lyrics='') => {
     const song = {
       id: id,
       artist: artist,
-      title: title
+      title: title,
+      lyrics: lyrics
     }
   
     return song;

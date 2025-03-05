@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react"
 import { useMantineTheme, Group, Stack, Container, Avatar, Text, Title, Button, LoadingOverlay, ActionIcon} from "@mantine/core";
 import { useLocation, useParams} from "react-router-dom";
+import { gameApi } from '../../api/gameApi.js';
 import { roomApi } from '../../api/roomApi.js';
 import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { FaCrown } from "react-icons/fa";
@@ -51,7 +52,7 @@ function WaitingGame({ currentPlayerId, currentPlayerName, setRoomStatus}) {
   }
 
   const handleStartButton = () => {
-    roomApi
+    gameApi
       .start(roomId)
       .then(() => {
         setRoomStatus(RoomStatus.PLAYING);

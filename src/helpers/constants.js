@@ -16,12 +16,13 @@ export const RoomStatus = {
 };
 
 /** GAME **/
-export const GameStatus = {
-  INITIALIZED: "initialized",
-  WAITING_PLAYERS: "waiting_players",
-  WAITING_OWNER: "waiting_owner",
+export const GamePhase = {
+  // INITIALIZED: "initialized",
+  // WAITING_PLAYERS: "waiting_players",
+  // WAITING_OWNER: "waiting_owner",
   PICKING_SONG: "picking_song",
-  GUESSING_SONG: "GUESSING_SONG"
+  GUESSING_SONG: "guessing_song",
+  SCOREBOARD: "scoreboard"
 };
 
 /** WEBSOCKET **/
@@ -36,12 +37,21 @@ export const WSmsgTypes = {
   CHAT_NEW_MSG: "new_message",
   ROOM_STATE: "room_state",
   GAME_START: "game_start",
+  GAME_PHASE_CHANGE: "new_game_phase",
   TIMER: "timer",
+  TURN_ENDED_PREMATURELY: "turn_ended_prematurely",
   TURN_CHANGE: "turn_change",
   ROUND_CHANGE: "round_change", // TODO
   SONG_CHOICES: "pick_song",
-  NO_SONG_PICKED: "no_song_chosen"
+  NO_SONG_PICKED: "no_song_chosen",
+  SINGER_SONG_DATA: "singer_song_data"
 };
+
+// export const GamePhases = {
+//   PICKING_SONG: "picking_song",
+//   GUESSING_SONG: "guessing_song",
+//   SCOREBOARD: "scoreboard"
+// }
 
 /** ERRORS **/
 export const ErrorCodes = {

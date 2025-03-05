@@ -1,6 +1,6 @@
 export const Game = {
   validator: (game) => {
-    const isValid = typeof game?.status?.type === 'string' && // TODO : check if in GameStatus enum
+    const isValid = typeof game?.status?.type === 'string' && // TODO : check if in GamePhase enum
                     // game?.status?.detail == null ||  // Type of detail depends on game status
                     typeof game?.config?.num_rounds === 'number' &&
                     typeof game?.config?.turn_duration === 'number' &&

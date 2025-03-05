@@ -8,17 +8,17 @@ import { isPlayerSingerFromGameData } from '../../../helpers/gameHelpers.js';
 import { useWSMessageStore } from '../../../websocket/WebSocketContext.jsx';
 
 function PlayingGameContent({ currentPlayer, gameData, roomId, players }) {
-  // const [gameStatus, setGameStatus] = useState(null);
+  // const [gamePhase, setGamePhase] = useState(null);
 
   // useEffect(() => {
-  //   setGameStatus(gameData?.status?.type);
-  // }, [gameStatus]);
+  //   setGamePhase(gameData?.status?.type);
+  // }, [gamePhase]);
 
   return (
     <Card shadow="sm" radius="lg" p="xl" className={classes.cardWrapper}>
       <Text fw={700}>Round {gameData.currentRound}</Text>
       <TimerGame />
-      {isPlayerSingerFromGameData(currentPlayer.id, gameData) ? <SingerView gameData={gameData} /> : <GuesserView gameData={gameData} roomId={roomId} currentPlayer={currentPlayer} players={players} />}
+      {isPlayerSingerFromGameData(currentPlayer.id, gameData) ? <SingerView roomId={roomId} gameData={gameData} /> : <GuesserView gameData={gameData} roomId={roomId} currentPlayer={currentPlayer} players={players} />}
     </Card>
   );
 }

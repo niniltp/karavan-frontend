@@ -29,12 +29,12 @@ export const roomApi = {
 
     return player;
   },
-  start: async (roomId) => {
-    Logger.log(`Game starting in room ${roomId}...`);
+  // start: async (roomId) => {
+  //   Logger.log(`Game starting in room ${roomId}...`);
 
-    const response = await apiClient.post(`/game`, { room_id: roomId }, true);
-    return response;
-  },
+  //   const response = await apiClient.post(`/game`, { room_id: roomId }, true);
+  //   return response;
+  // },
   removePlayer: async (roomId, playerId) => { // TODO : implement + server must check if cookie of player performing action is owner
     Logger.log(`Removing user ${playerId} from room ${roomId}...`);
 

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useScrollIntoView } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import { Container, LoadingOverlay, ScrollArea, Avatar, Card, Group, Button, Textarea, Stack, Text, Paper } from "@mantine/core";
 // import { roomApi } from '../../api/roomApi.js';
@@ -24,13 +25,17 @@ function Chat({ roomId, currentPlayer, players }) {
   // Retrieve song choices from WS message
   localWSstores.chatMessages = useWSMessageStore(WSmsgTypes.CHAT_NEW_MSG);
 
+  const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView({
+    // offset: 60,
+  });
+
   const form = useForm({
     initialValues: {
       message: ''
     },
     validate: {
       message: (value) => {
-        if (!value) {
+        if (!value || value.length === 0 || /^\s*$/.test(value)) {
           return getErrorUserMessage(ErrorCodes.CHAT_EMPTY_MSG);
         }
 
@@ -45,6 +50,9 @@ function Chat({ roomId, currentPlayer, players }) {
 
   const handleSubmit = async (formData) => {
     chatApi.send(roomId, currentPlayer.id, formData.message) // TODO : check sanitize input user
+    .then(() => {
+      form.setValues({ message: '' });
+    })
     .catch( (err) => {
       Logger.error(err);
       handleError(err.code);
@@ -52,15 +60,51 @@ function Chat({ roomId, currentPlayer, players }) {
   }
 
   useEffect(() => {
+    // Retrieve chat history on component first render
     chatApi.getHistory(roomId)
-     .then(setChatHistory)
+     .then((history) => {
+      const localHistory = [];
+      history.forEach((message) => {
+        localHistory.push({
+          senderId: message.senderId,
+          senderName: getPlayerNameFromId(message.senderId, players),
+          content: message.content
+        });
+      })
+      setChatHistory(localHistory);
+     })
      .catch((err) => {
         Logger.error(err);
         handleError(err.code);
       })
       .finally(() => {
         setIsLoading(false);
-      });;
+      });
+
+      // Scroll last message into view
+      scrollIntoView({
+        alignment: 'center',
+      })
+
+      // Create keyboard event listener
+      const keyDownHandler = (event) => {
+        Logger.log(`[EVENT] User pressed key ${event.key}`)
+        if (event.key === 'Enter' && !event.shiftKey) {
+          event.preventDefault();
+          if(form.isValid()) {
+            handleSubmit(form.getValues());
+          }
+        }
+      }
+
+      // Add keyboard event listener
+      document.addEventListener('keydown', keyDownHandler);
+
+      // Remove keyboard event listener when component unmounts
+      return () => {
+        document.removeEventListener('keydown', keyDownHandler);
+      };
+
   }, []);
 
   useEffect(() => {
@@ -72,29 +116,24 @@ function Chat({ roomId, currentPlayer, players }) {
           senderId: localWSstores.chatMessages.senderId,
           senderName: senderName,
           content: localWSstores.chatMessages.content
-        }]);
+        }
+      ]);
+      scrollIntoView({
+        alignment: 'center',
+      })
       Logger.log(`[WEBSOCKET] New message received from ${senderName}`);
     }
   }, [localWSstores.chatMessages]);
 
-  // const TESTmsg = [
-  //   {sender: 'someone', content: 'Hello'},
-  //   {sender: 'potatoe', content: 'Salut'},
-  //   {sender: 'someone', content: 'hi !'},
-  //   {sender: 'inconnu', content: 'Reprehenderit enim exercitation aute in consectetur. Proident in laborum cupidatat non elit id proident laborum minim. Incididunt aute occaecat sunt velit veniam deserunt fugiat sunt eu aliqua cupidatat laboris nisi id. Ullamco occaecat est elit consequat. Sit amet voluptate qui non excepteur adipisicing eiusmod nostrud cillum Lorem laboris qui ex. Consequat irure fugiat incididunt est.'},
-  //   {sender: 'inconnu', content: 'Reprehenderit enim exercitation aute in consectetur. Proident in laborum cupidatat non elit id proident laborum minim. Incididunt aute occaecat sunt velit veniam deserunt fugiat sunt eu aliqua cupidatat laboris nisi id. Ullamco occaecat est elit consequat. Sit amet voluptate qui non excepteur adipisicing eiusmod nostrud cillum Lorem laboris qui ex. Consequat irure fugiat incididunt est.'},
-  //   {sender: 'inconnu', content: 'Reprehenderit enim exercitation aute in consectetur. Proident in laborum cupidatat non elit id proident laborum minim. Incididunt aute occaecat sunt velit veniam deserunt fugiat sunt eu aliqua cupidatat laboris nisi id. Ullamco occaecat est elit consequat. Sit amet voluptate qui non excepteur adipisicing eiusmod nostrud cillum Lorem laboris qui ex. Consequat irure fugiat incididunt est.'},
-  //   {sender: 'someone', content: 'Ad laboris magna cillum est sunt incididunt non aute aliqua. !'}
-  // ]
-
   return (
     <Card radius="lg" className={classes.wrapper}>
-      <ScrollArea h={500} offsetScrollbars scrollbarSize={14} scrollHideDelay={500}>
+      <ScrollArea viewportRef={scrollableRef} h={500} offsetScrollbars scrollbarSize={14} scrollHideDelay={500}>
         <LoadingOverlay visible={isLoading} zIndex={1000} />
         <Stack ta="justify" align="flex-start" justify="flex-end" gap="xs" p={10} >
           {chatHistory.map((message, index) => {
             return (
-              <div key={index} >
+              <div key={index} ref={index === chatHistory?.length-1 ? targetRef : null} >
+              {/* <div key={index} {...(index === chatHistory?.length-1 ? {ref: targetRef} : {})} > */}
                 <Text fw={500} size="sm" pl={60} variant="gradient" gradient={{ from: 'blue', to: 'grape', deg: 347 }}>{message.senderName}</Text>
                 <Group wrap="nowrap">
                   <Avatar
@@ -108,6 +147,7 @@ function Chat({ roomId, currentPlayer, players }) {
               </div>
             )
           })}
+      
         </Stack>
       </ScrollArea>
       <form onSubmit={form.onSubmit(handleSubmit)}>

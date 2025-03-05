@@ -2,7 +2,7 @@ import { Container, Group } from "@mantine/core";
 import PlayersList from '../components/game/PlayingGame/PlayersList.jsx';
 import PlayingGameContent from '../components/game/PlayingGame/PlayingGameContent.jsx';
 import classes from "../styles/PlayingGame.module.css";
-import { GameStatus } from "../helpers/constants.js";
+import { GamePhase } from "../helpers/constants.js";
 import { Player } from "../helpers/mapping/player.js";
 import { Game } from "../helpers/mapping/game.js";
 
@@ -20,7 +20,7 @@ export default function Test() {
 
   const gameData = Game.create(
     {
-      type: GameStatus.PICKING_SONG,
+      type: GamePhase.PICKING_SONG,
       detail: null
     },
     {

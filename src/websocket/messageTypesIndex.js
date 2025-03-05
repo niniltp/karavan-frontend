@@ -3,13 +3,16 @@ import { ChatMessage } from './messageTypes/chatType.js';
 import { PlayersReadyMessage } from './messageTypes/playersReadyType.js';
 import { RoomStateMessage } from './messageTypes/roomStateType.js';
 import { GameStartMessage } from './messageTypes/gameStartType.js';
+import { GamePhaseChangeMessage } from './messageTypes/gamePhaseChangeType.js';
 import { AllPlayersReadyMessage } from './messageTypes/allPlayersReadyType.js';
 import { TimerMessage } from './messageTypes/timerType.js';
+import { TurnEndedPrematurelydMessage } from './messageTypes/turnEndedPrematurelyType.js';
 import { TurnChangeMessage } from './messageTypes/turnChangeType.js';
 import { WaitingPlayersMessage } from './messageTypes/waitingPlayersType.js';
 import { SongChoicesMessage } from './messageTypes/songChoicesType.js';
 import { NoSongPickedMessage } from './messageTypes/noSongPickedType.js';
 import { RoundChangeMessage } from './messageTypes/roundChangeType.js';
+import { SingerSongDataMessage } from './messageTypes/singerSongDataType.js';
 
 export const initializeRegistry = () => {
   registerMessageType(WaitingPlayersMessage.type, {
@@ -42,9 +45,19 @@ export const initializeRegistry = () => {
     handler: GameStartMessage.handler
   });
 
+  registerMessageType(GamePhaseChangeMessage.type, {
+    validator: GamePhaseChangeMessage.validator,
+    handler: GamePhaseChangeMessage.handler
+  });
+
   registerMessageType(TimerMessage.type, {
     validator: TimerMessage.validator,
     handler: TimerMessage.handler
+  });
+
+  registerMessageType(TurnEndedPrematurelydMessage.type, {
+    validator: TurnEndedPrematurelydMessage.validator,
+    handler: TurnEndedPrematurelydMessage.handler
   });
 
   registerMessageType(RoundChangeMessage.type, {
@@ -65,5 +78,10 @@ export const initializeRegistry = () => {
   registerMessageType(NoSongPickedMessage.type, {
     validator: NoSongPickedMessage.validator,
     handler: NoSongPickedMessage.handler
+  });
+
+  registerMessageType(SingerSongDataMessage.type, {
+    validator: SingerSongDataMessage.validator,
+    handler: SingerSongDataMessage.handler
   });
 };

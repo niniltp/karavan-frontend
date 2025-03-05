@@ -1,10 +1,10 @@
 import { API_URL } from './constants.js';
 
 export const apiClient = {
-  get: (endpoint, withCreds="omit") => fetch(`${API_URL}${endpoint}`, {
+  get: (endpoint, withCreds=false) => fetch(`${API_URL}${endpoint}`, {
     credentials: withCreds ? "include" : "omit"
   }).then(handleResponse),
-  post: (endpoint, body, withCreds="omit") => fetch(`${API_URL}${endpoint}`, {
+  post: (endpoint, body, withCreds=false) => fetch(`${API_URL}${endpoint}`, {
     mode: 'cors',
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -17,7 +17,7 @@ export const apiClient = {
   //   headers: { 'Content-Type': 'application/json' },
   //   body: JSON.stringify(body),
   // }).then(handleResponse),
-  delete: (endpoint, withCreds="omit") => fetch(`${API_URL}${endpoint}`, {
+  delete: (endpoint, withCreds=false) => fetch(`${API_URL}${endpoint}`, {
     mode: 'cors',
     method: 'DELETE',
     credentials: withCreds? "include" : "omit"
